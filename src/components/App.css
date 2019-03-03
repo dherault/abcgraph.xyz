@@ -1,0 +1,35 @@
+.App {
+  overflow: hidden;
+}
+
+.App-container {
+  width: 100vw;
+  /* height: 100vh; */
+}
+
+.App-side {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  padding: 16px 16px 0 0;
+}
+
+.App-button {
+  margin-bottom: 16px;
+  margin-left: 16px;
+  background-color: white;
+  border: none;
+  padding: 0px 16px;
+  height: 46px;
+  border-radius: 23px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.5);
+  cursor: pointer;
+}
+
+.App-button:hover {
+  background-color: #f5f5f5;
+}
+
+.App-button:focus {
+  outline: none;
+}

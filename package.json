@@ -6,7 +6,11 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "sync-s3": "aws s3 sync build/ s3://abcgraph.xyz --region eu-west-3",
+    "invalidate-cloudfront": "aws cloudfront create-invalidation --distribution-id E26FB3U2IHY4K3 --paths /*",
+    "deploy": "npm run sync-s3 && npm run invalidate-cloudfront",
+    "build-deploy": "npm run build && npm run deploy"
   },
   "browserslist": [
     ">0.2%",
@@ -17,9 +21,13 @@
   "dependencies": {
     "flexpad": "^0.2.0",
     "normalize.css": "^8.0.1",
+    "piano-keys": "^1.0.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-scripts": "2.1.5"
+    "react-redux": "^6.0.1",
+    "react-scripts": "2.1.5",
+    "redux": "^4.0.1",
+    "vis": "^4.21.0"
   },
   "devDependencies": {
     "@babel/core": "^7.3.4",
