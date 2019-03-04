@@ -37,6 +37,6 @@ const initialState = loadState()
 
 const store = createStore(reducer, initialState, enhancer)
 
-store.subscribe(throttle(() => saveState(store.getState()), 1000))
+store.subscribe(throttle(() => saveState(store.getState()), 500))
 
 export default store

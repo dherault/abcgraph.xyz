@@ -15,6 +15,18 @@ function nodes(state = [], action) {
     return nextState
   }
 
+  if (action.type === 'DELETE_NODES_AND_EDGES') {
+    const nextState = state.slice()
+
+    action.payload.nodes.forEach(nodeId => {
+      const nodeIndex = nextState.findIndex(node => node.id === nodeId)
+
+      nextState.splice(nodeIndex, 1)
+    })
+
+    return nextState
+  }
+
   return state
 }
 

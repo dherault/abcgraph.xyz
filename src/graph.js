@@ -31,6 +31,8 @@ function registerGraph(container) {
         color: '#ebebeb',
         highlight: '#2B7CE9',
       },
+      hoverWidth: 0.2,
+      selectionWidth: 0.2,
     },
   }
 
@@ -54,6 +56,7 @@ function registerGraph(container) {
     })
   })
 
+  window.canvas = container.firstChild.firstChild
   window.network = network
   window.data = data
 
@@ -61,7 +64,7 @@ function registerGraph(container) {
     container.style.height = '100vh'
   })
 
-  const eventHandler = event => {
+  const selectEventHandler = event => {
     store.dispatch({
       type: 'SELECT_NODES',
       payload: event.nodes,
@@ -73,10 +76,11 @@ function registerGraph(container) {
     })
   }
 
-  network.on('selectNode', eventHandler)
-  network.on('selectEdge', eventHandler)
-  network.on('deselectNode', eventHandler)
-  network.on('deselectEdge', eventHandler)
+  network.on('selectNode', selectEventHandler)
+  network.on('selectEdge', selectEventHandler)
+  network.on('deselectNode', selectEventHandler)
+  network.on('deselectEdge', selectEventHandler)
+  network.on('click', () => window.canvas.focus())
 }
 
 export default registerGraph

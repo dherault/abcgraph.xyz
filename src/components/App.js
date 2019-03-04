@@ -23,6 +23,7 @@ class App extends Component {
     canvas.focus()
 
     shortcut(canvas, 'n', this.handleNewNodeClick)
+    shortcut(canvas, 'delete', this.handleDeleteClick)
   }
 
   handleNewNodeClick = () => {
@@ -42,6 +43,8 @@ class App extends Component {
       type: 'SELECT_NODES',
       payload: [id],
     })
+
+    window.canvas.focus()
   }
 
   handleNewEdgeClick = () => {
@@ -65,6 +68,33 @@ class App extends Component {
     dispatch({
       type: 'SELECT_EDGES',
       payload: [id],
+    })
+
+    window.canvas.focus()
+  }
+
+  handleDeleteClick = () => {
+    const { selectedNodes, selectedEdges, dispatch } = this.props
+
+    dispatch({
+      type: 'SELECT_NODES',
+      payload: [],
+    })
+
+    dispatch({
+      type: 'SELECT_EDGES',
+      payload: [],
+    })
+
+    window.data.nodes.remove(selectedNodes)
+    window.data.edges.remove(selectedEdges)
+
+    dispatch({
+      type: 'DELETE_NODES_AND_EDGES',
+      payload: {
+        nodes: selectedNodes,
+        edges: selectedEdges,
+      },
     })
   }
 
