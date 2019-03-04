@@ -1,11 +1,9 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import vis from 'vis'
 import shortcut from 'piano-keys'
 
 import './App.css'
 
-import store from '../state/store'
 import registerGraph from '../graph'
 import { createId } from '../utils'
 
@@ -24,13 +22,6 @@ class App extends Component {
     canvas.tabIndex = 0
     canvas.focus()
 
-    store.subscribe(() => {
-      const { nodes, edges } = store.getState()
-
-      window.data.nodes.update(nodes)
-      window.data.edges.update(edges)
-    })
-
     shortcut(canvas, 'n', this.handleNewNodeClick)
   }
 
@@ -47,7 +38,10 @@ class App extends Component {
       },
     })
 
-    window.network.selectNodes([id])
+    dispatch({
+      type: 'SELECT_NODES',
+      payload: [id],
+    })
   }
 
   handleNewEdgeClick = () => {
@@ -63,11 +57,19 @@ class App extends Component {
       },
     })
     
-    // window.network.selectEdges(id)
+    dispatch({
+      type: 'SELECT_NODES',
+      payload: [selectedNodes[0], selectedNodes[1]],
+    })
+
+    dispatch({
+      type: 'SELECT_EDGES',
+      payload: [id],
+    })
   }
 
   render() {
-    const { selectedNodes, selectedEdges } = this.props
+    const { nodes, edges, selectedNodes, selectedEdges } = this.props
 
     return (
       <div className="App relative">
@@ -87,11 +89,11 @@ class App extends Component {
           </div>
 
           {selectedNodes.map(nodeId => (
-            <NodePanel key={nodeId} nodeId={nodeId} />
+            <NodePanel key={nodeId} node={nodes.find(node => node.id === nodeId)} />
           ))}
 
           {selectedEdges.map(edgeId => (
-            <EdgePanel key={edgeId} edgeId={edgeId} />
+            <EdgePanel key={edgeId} edge={edges.find(edge => edge.id === edgeId)} />
           ))}
         </div>
       </div>
@@ -100,6 +102,8 @@ class App extends Component {
 }
 
 const mapStateToProps = s => ({
+  nodes: s.nodes,
+  edges: s.edges,
   selectedEdges: s.selectedEdges,
   selectedNodes: s.selectedNodes,
 })

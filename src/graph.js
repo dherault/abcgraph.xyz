@@ -3,11 +3,8 @@ import store from './state/store'
 
 function registerGraph(container) {
 
-  const { nodes, edges } = store.getState()
+  const { nodes, edges, selectedNodes, selectedEdges } = store.getState()
 
-  console.log('nodes', nodes)
-  console.log('edges', edges)
-  
   // create a network
   const data = {
     nodes: new vis.DataSet(nodes),
@@ -41,6 +38,22 @@ function registerGraph(container) {
   
   const network = new vis.Network(container, data, options)
 
+  network.setSelection({
+    nodes: selectedNodes,
+    edges: selectedEdges,
+  })
+
+  store.subscribe(() => {
+    const { nodes, edges, selectedNodes, selectedEdges } = store.getState()
+
+    data.nodes.update(nodes)
+    data.edges.update(edges)
+    network.setSelection({
+      nodes: selectedNodes,
+      edges: selectedEdges,
+    })
+  })
+
   window.network = network
   window.data = data
 
@@ -48,7 +61,7 @@ function registerGraph(container) {
     container.style.height = '100vh'
   })
 
-  network.on('selectNode', event => {
+  const eventHandler = event => {
     store.dispatch({
       type: 'SELECT_NODES',
       payload: event.nodes,
@@ -58,19 +71,12 @@ function registerGraph(container) {
       type: 'SELECT_EDGES',
       payload: event.edges,
     })
-  })
+  }
 
-  network.on('deselectNode', event => {
-    store.dispatch({
-      type: 'SELECT_NODES',
-      payload: event.nodes,
-    })
-
-    store.dispatch({
-      type: 'SELECT_EDGES',
-      payload: event.edges,
-    })
-  })
+  network.on('selectNode', eventHandler)
+  network.on('selectEdge', eventHandler)
+  network.on('deselectNode', eventHandler)
+  network.on('deselectEdge', eventHandler)
 }
 
 export default registerGraph
