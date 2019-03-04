@@ -5,6 +5,18 @@ import './EdgePanel.css'
 
 class EdgePanel extends Component {
 
+  handleLabelChange = e => {
+    const { edge, dispatch } = this.props
+
+    dispatch({
+      type: 'UPDATE_EDGE',
+      payload: {
+        ...edge,
+        label: e.target.value || ' ',
+      },
+    })
+  }
+
   render() {
     const { edge, nodes } = this.props
 
@@ -12,6 +24,7 @@ class EdgePanel extends Component {
 
     const from = nodes.find(node => node.id === edge.from)
     const to = nodes.find(node => node.id === edge.to)
+    const label = edge.label === ' ' ? '' : edge.label
 
     return (
       <div className="EdgePanel">
@@ -20,6 +33,13 @@ class EdgePanel extends Component {
         </div>
         <div>
           To: {to.label}
+        </div>
+        <div>
+          <textarea 
+            className="EdgePanel-textarea"
+            value={label} 
+            onChange={this.handleLabelChange} 
+          />
         </div>
       </div>
     )
