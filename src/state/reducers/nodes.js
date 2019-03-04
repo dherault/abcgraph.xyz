@@ -3,13 +3,13 @@ function nodes(state = [], action) {
     return [...state, action.payload]
   }
 
-  if (action.type === 'EDIT_NODE') {
+  if (action.type === 'UPDATE_NODE') {
     const nextState = state.slice()
     const nodeIndex = nextState.findIndex(node => node.id === action.payload.id)
 
     nextState[nodeIndex] = {
       ...nextState[nodeIndex],
-      ...action.payload.id,
+      ...action.payload,
     }
 
     return nextState

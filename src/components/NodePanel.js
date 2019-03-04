@@ -8,6 +8,7 @@ class NodePanel extends Component {
   handleLabelChange = e => {
     const { node, dispatch } = this.props
 
+    console.log('node', node)
     dispatch({
       type: 'UPDATE_NODE',
       payload: {
@@ -26,7 +27,11 @@ class NodePanel extends Component {
 
     return (
       <div className="NodePanel">
-        <input type="text" value={label} onChange={this.handleLabelChange} />
+        <textarea 
+          className="NodePanel-textarea" 
+          value={label} 
+          onChange={this.handleLabelChange} 
+        />
       </div>
     )
   }

@@ -45,7 +45,7 @@ function registerGraph(container) {
 
   store.subscribe(() => {
     const { nodes, edges, selectedNodes, selectedEdges } = store.getState()
-
+    console.log('nodes', nodes)
     data.nodes.update(nodes)
     data.edges.update(edges)
     network.setSelection({
