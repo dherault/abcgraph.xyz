@@ -1,12 +1,17 @@
 import vis from 'vis'
-import store from './state/store';
+import store from './state/store'
 
 function registerGraph(container) {
 
+  const { nodes, edges } = store.getState()
+
+  console.log('nodes', nodes)
+  console.log('edges', edges)
+  
   // create a network
   const data = {
-    nodes: new vis.DataSet([]),
-    edges: new vis.DataSet([]),
+    nodes: new vis.DataSet(nodes),
+    edges: new vis.DataSet(edges),
   }
 
   const options = {

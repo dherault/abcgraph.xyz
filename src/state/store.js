@@ -1,9 +1,16 @@
 import { applyMiddleware, compose, combineReducers, createStore } from 'redux'
 
+import { loadState, saveState } from './persist'
+import { throttle } from '../utils'
+
+import nodes from './reducers/nodes'
+import edges from './reducers/edges'
 import selectedEdges from './reducers/selectedEdges'
 import selectedNodes from './reducers/selectedNodes'
 
 const reducer = combineReducers({
+  nodes,
+  edges,
   selectedEdges,
   selectedNodes,
 })
@@ -26,6 +33,10 @@ if (process.env.NODE_ENV !== 'production') middlewares.push(loggerMiddleware)
 
 const enhancer = composeEnhancers(applyMiddleware(...middlewares))
 
-const store = createStore(reducer, {}, enhancer)
+const initialState = loadState()
+
+const store = createStore(reducer, initialState, enhancer)
+
+store.subscribe(throttle(() => saveState(store.getState()), 1000))
 
 export default store

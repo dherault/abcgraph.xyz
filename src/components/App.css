@@ -33,3 +33,7 @@
 .App-button:focus {
   outline: none;
 }
+
+canvas:focus {
+  outline: none;
+}
